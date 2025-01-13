@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                        <div class="card-body py-4 px-4 px-md-5">
+
+                            <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                                <i class="fas fa-check-square me-1"></i>
+                                <u>TechnoPeak</u>
+                            </p>
+
+                            <div class="pb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-row align-items-center"
+                                             style="display: flex; justify-content: center; align-items: center">
+                                            <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <textarea class="form-control form-control-lg" rows="5" cols="100"
+                                                          id="text" name="text"></textarea>
+                                                <br>
+                                                <div style="display: flex; justify-content: space-between">
+                                                    <input type="file" class="btn btn-primary" name="file">
+                                                    <button type="submit" class="btn btn-primary w-50">Add</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                                {% for note in notes %}
+    <ul class="list-group list-group-vertical rounded-0 mb-2">
+        <li class="list-group-item d-flex flex-column justify-content-between align-items-center ps-3 pe-3 py-2 rounded-3 border mb-2">
+            <div class="text-section d-flex align-items-center">
+                <pre>{% autoescape off %}{{ note.text|linebreaks }}{% endautoescape %}</pre>
+            </div>
+            <div class="action-section">
+                <a class="btn btn-primary btn-sm" href="{{ note.file_url }}" download>
+                    {% if note.file %}
+                        {{ note.file.name }}
+                    {% else %}
+                        Fayl yo'q
+                    {% endif %}
+                </a>
+            </div>
+        </li>
+    </ul>
+{% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+.list-group-item {
+    background-color: #f9f9f9; /* Yengil fon rangi */
+    border: 1px solid #ddd; /* Chegaralar */
+    border-radius: 8px; /* Yumshoq burchaklar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Yumshoq soyalar */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.list-group-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.text-section span {
+    font-size: 16px; /* Matnning o‘lchami */
+    font-weight: 500;
+    color: #333; /* Matn rangi */
+}
+
+.action-section .btn {
+    background-color: #007bff; /* Tugma rangi */
+    color: #fff; /* Tugma matni rangi */
+    border: none; /* Chegarasiz tugma */
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 5px; /* Yumshoq tugma burchaklari */
+    text-transform: capitalize; /* Harf o‘lchami */
+    margin: 10px;
+}
+
+.action-section .btn:hover {
+    background-color: #0056b3; /* Tugma hover rangi */
+    color: #fff; }
+pre {
+    white-space: pre-wrap; /* Yangi qatorlarni saqlaydi va matnni konteynerga sig'diradi */
+    word-wrap: break-word; /* So'zlarni uzish uchun */
+    max-width: 100%; /* Kenglikni konteynerga moslashtiradi */
+    overflow-wrap: break-word; /* Matnni qirqish uchun */
+    padding: 10px 20px;
+}
+
+    </style>
+
+{% endblock %}
